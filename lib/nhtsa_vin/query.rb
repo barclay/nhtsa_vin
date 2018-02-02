@@ -6,7 +6,7 @@ module NhtsaVin
 
     NHTSA_URL = 'https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/'.freeze
 
-    attr_reader :vin, :url, :response, :data
+    attr_reader :vin, :url, :response, :data, :error, :error_code
 
     def initialize(vin, options={})
       @vin = vin
@@ -32,7 +32,14 @@ module NhtsaVin
       # 6 - Incomplete VIN.
       # 8 - No detailed data available currently.
       # 11- Incorrect Model Year, decoded data may not be accurate!
-      @valid = (value_id_for('Error Code').to_i < 4) ? true : false
+      @error_code = value_id_for('Error Code')&.to_i
+
+      @valid = (@error_code < 4) ? true : false
+
+      if @error_code != 0
+        @error = value_for('Error Code')
+      end
+
       return nil unless valid?
 
       make = value_for('Make').capitalize
