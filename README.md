@@ -1,5 +1,6 @@
 # NHTSA Vin
-----
+
+[![Gem Version](https://badge.fury.io/rb/nhtsa_vin.svg)](https://badge.fury.io/rb/nhtsa_vin)
 
 A ruby gem for fetching and parsing vehicle identification via the vehicle identification number (VIN) from the [NHTSA webservice](https://vpic.nhtsa.dot.gov/api/Home). Note, this gem is not officially affiliated with the NHTSA.
 
@@ -26,9 +27,9 @@ Or install it yourself as:
 Usage is fairly simple. Provide a VIN, and the gem will return a struct of vehicle data. 
 
 ```ruby
-NhtsaVin.get('1J4BA5H11AL143811') # => <Struct::NhtsaResponse make="Jeep", model="Grand Cherokee", trim="Laredo/Rocky Mountain Edition", type="SUV", year="2008", size=nil, ... doors=4>
-
+query = NhtsaVin.get('1J4BA5H11AL143811')
 query.valid? # => true
+query.response # => <Struct::NhtsaResponse make="Jeep", model="Grand Cherokee", trim="Laredo/Rocky Mountain Edition", type="SUV", year="2008", size=nil, ... doors=4>
 ```
 
 In the result no match is found, the result will be `nil`, and `#valid?` will return `false`. 

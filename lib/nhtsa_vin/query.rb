@@ -6,7 +6,7 @@ module NhtsaVin
 
     NHTSA_URL = 'https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/'.freeze
 
-    attr_reader :vin, :url, :response, :data, :error, :error_code
+    attr_reader :vin, :url, :response, :data, :error, :error_code. :raw_response
 
     def initialize(vin, options={})
       @vin = vin
@@ -14,8 +14,8 @@ module NhtsaVin
     end
 
     def get
-      @response = fetch
-      parse(JSON.parse(@response))
+      @raw_response = fetch
+      parse(JSON.parse(@raw_response))
     end
 
     def valid?
@@ -33,13 +33,11 @@ module NhtsaVin
       # 8 - No detailed data available currently.
       # 11- Incorrect Model Year, decoded data may not be accurate!
       @error_code = value_id_for('Error Code')&.to_i
-
       @valid = (@error_code < 4) ? true : false
 
       if @error_code != 0
         @error = value_for('Error Code')
       end
-
       return nil unless valid?
 
       make = value_for('Make').capitalize
@@ -48,11 +46,10 @@ module NhtsaVin
       year = value_for('Model Year')
       style = value_for('Body Class')
       type = vehicle_type(style, value_for('Vehicle Type'))
-      size = nil
       doors = value_for('Doors')&.to_i
 
-      Struct::NhtsaResponse.new(@vin, make, model, trim, type, year,
-                                size, style, value_for('Vehicle Type'), doors)
+      @response = Struct::NhtsaResponse.new(@vin, make, model, trim, type, year,
+                                            style, value_for('Vehicle Type'), doors)
     end
 
     def vehicle_type(body_class, type)
@@ -99,6 +96,6 @@ module NhtsaVin
   end
 
   Struct.new('NhtsaResponse', :vin, :make, :model, :trim, :type, :year,
-             :size, :body_style, :vehicle_class, :doors)
+             :body_style, :vehicle_class, :doors)
 end
 

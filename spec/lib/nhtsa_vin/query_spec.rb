@@ -17,10 +17,10 @@ describe NhtsaVin::Query do
     context 'successful response' do
       before do
         allow(client).to receive(:fetch).and_return(success_response)
-        client.get #('1G1WT57K291223396')
+        client.get
       end
       it 'fetches json and response is valid' do
-        expect(client.response).to eq success_response
+        expect(client.raw_response).to eq success_response
         expect(client.valid?).to be true
       end
       it 'has no error' do
@@ -53,7 +53,7 @@ describe NhtsaVin::Query do
         client.get
       end
       it 'fetches json and response is not valid' do
-        expect(client.response).to eq not_found_response
+        expect(client.raw_response).to eq not_found_response
         expect(client.valid?).to be false
       end
       it 'returns nil' do
