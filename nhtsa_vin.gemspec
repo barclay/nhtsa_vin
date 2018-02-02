@@ -6,7 +6,11 @@ Gem::Specification.new do |gem|
   gem.platform      = Gem::Platform::RUBY
 
   gem.summary       = 'A ruby library for accessing vin records from the NHTSA'
-  gem.description   = IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+  gem.description   = 'A ruby gem for fetching and parsing vehicle identificationi'\
+                      'via the vehicle identification number (VIN) from the NHTSA'\
+                      'webservice. Note, this gem is not officially affiliated with'\
+                      'the NHTSA.'
+
   gem.homepage      = 'https://github.com/deliv/nhtsa_vin'
   gem.licenses      = ['MIT']
   gem.authors       = ['Barclay Loftus']
