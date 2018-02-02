@@ -6,10 +6,6 @@ describe NhtsaVin::Query do
   let(:success_response) { File.read(File.join('spec', 'fixtures', 'success.json')) }
   let(:not_found_response) { File.read(File.join('spec', 'fixtures', 'not_found.json')) }
 
-  # let(:xml_error)  { File.read(File.join('spec', 'fixtures', 'error.xml')) }
-  # let(:xml_multi)  { File.read(File.join('spec', 'fixtures', 'success_multi.xml')) }
-  # let(:xml_single) { File.read(File.join('spec', 'fixtures', 'success_single.xml')) }
-
   describe '#initialize' do
     it 'stores the complete URL of the request' do
       expect(client.url)
@@ -21,10 +17,10 @@ describe NhtsaVin::Query do
     context 'successful response' do
       before do
         allow(client).to receive(:fetch).and_return(success_response)
-        client.get #('1G1WT57K291223396')
+        client.get
       end
       it 'fetches json and response is valid' do
-        expect(client.response).to eq success_response
+        expect(client.raw_response).to eq success_response
         expect(client.valid?).to be true
       end
 
@@ -52,7 +48,7 @@ describe NhtsaVin::Query do
         client.get
       end
       it 'fetches json and response is not valid' do
-        expect(client.response).to eq not_found_response
+        expect(client.raw_response).to eq not_found_response
         expect(client.valid?).to be false
       end
       it 'returns nil' do
