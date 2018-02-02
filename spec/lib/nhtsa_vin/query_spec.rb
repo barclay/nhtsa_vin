@@ -23,7 +23,12 @@ describe NhtsaVin::Query do
         expect(client.raw_response).to eq success_response
         expect(client.valid?).to be true
       end
-
+      it 'has no error' do
+        expect(client.error).to be_nil
+      end
+      it 'has an error code of 0' do
+        expect(client.error_code).to eq 0
+      end
       context 'its response' do
         let(:response) { client.get }
         it 'returns a struct' do
@@ -36,7 +41,7 @@ describe NhtsaVin::Query do
           expect(response.body_style).to eq 'Wagon'
           expect(response.doors).to eq 4
         end
-        it 'parses out the type' do
+        it 'parses out the type enumeration' do
           expect(response.type).to eq 'Minivan'
         end
       end
@@ -53,6 +58,12 @@ describe NhtsaVin::Query do
       end
       it 'returns nil' do
         expect(client.get).to be_nil
+      end
+      it 'has an error message' do
+        expect(client.error).to eq '11- Incorrect Model Year, decoded data may not be accurate!'
+      end
+      it 'has an error code' do
+        expect(client.error_code).to eq 11
       end
     end
   end
