@@ -1,0 +1,1 @@
+require 'nhtsa_vin'
