@@ -2,6 +2,8 @@
 
 [![Gem Version](https://badge.fury.io/rb/nhtsa_vin.svg)](https://badge.fury.io/rb/nhtsa_vin)
 [![CircleCI](https://circleci.com/gh/deliv/nhtsa_vin.svg?style=svg)](https://circleci.com/gh/deliv/nhtsa_vin)
+[![Maintainability](https://api.codeclimate.com/v1/badges/5096bcc9d52e5253c532/maintainability)](https://codeclimate.com/github/deliv/nhtsa_vin/maintainability)
+
 
 A ruby gem for fetching and parsing vehicle identification via the vehicle identification number (VIN) from the [NHTSA webservice](https://vpic.nhtsa.dot.gov/api/Home). Note, this gem is not officially affiliated with the NHTSA.
 
