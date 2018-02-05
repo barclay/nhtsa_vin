@@ -15,6 +15,7 @@ module NhtsaVin
 
     def get
       @raw_response = fetch
+      return if @raw_response.nil?
       parse(JSON.parse(@raw_response))
     end
 
@@ -90,7 +91,15 @@ module NhtsaVin
       end
 
       def fetch
-        Net::HTTP.get(URI.parse(@url))
+        begin
+          Net::HTTP.get(URI.parse(@url))
+        rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, SocketError,
+               Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+               Net::ProtocolError, Errno::ECONNREFUSED => e
+          @valid = false
+          @error = e.message
+          nil
+        end
       end
 
   end
