@@ -66,5 +66,46 @@ describe NhtsaVin::Query do
         expect(client.error_code).to eq 11
       end
     end
+    context 'connection or network error' do
+      before do
+        allow(Net::HTTP).to receive(:get_response).and_raise(Net::ReadTimeout)
+        client.get
+      end
+      it 'should not raise' do
+        expect { client.get }.to_not raise_error
+      end
+      it 'should return nil' do
+        expect(client.get).to be_nil
+      end
+      it 'should not be valid' do
+        expect(client.valid?).to be false
+      end
+      it 'should have an error message' do
+        expect(client.error).to eq 'Net::ReadTimeout'
+      end
+      it 'should not contain a response object' do
+        expect(client.response).to be_nil
+      end
+    end
+  end
+
+  describe '#vehicle_type' do
+    let(:query) { NhtsaVin::Query.new('') }
+    context 'with type of TRUCK' do
+      it 'returns van when the type is truck and body_class includes Van' do
+        expect(query.vehicle_type('Cargo Van', 'TRUCK')).to eq 'Van'
+      end
+      it 'returns truck otherwise' do
+        expect(query.vehicle_type('Light Duty Pickup', 'TRUCK')).to eq 'Truck'
+      end
+    end
+    context 'with type MULTIPURPOSE PASSENGER VEHICLE (MPV)' do
+      it 'returns SUV when the body class supports it' do
+        expect(
+          query.vehicle_type('Sport Utility Vehicle (SUV)',
+                             'MULTIPURPOSE PASSENGER VEHICLE (MPV)')
+          ).to eq 'SUV'
+      end
+    end
   end
 end
