@@ -24,20 +24,33 @@ Or install it yourself as:
 
 ## Usage
 
-Usage is fairly simple. Provide a VIN, and the gem will return a struct of vehicle data. 
+Usage is fairly simple, there's an exposed `get` class method that you can pass in a VIN string to, and it will return you a NhtsaVin::Query.  
 
 ```ruby
-query = NhtsaVin.get('1J4BA5H11AL143811')
+query = NhtsaVin.get('1J4BA5H11AL143811') # => <NhtsaVin::Query>
 query.valid? # => true
+```
+
+The actual data from the webservice is contained in the `response` method. This returns a struct containing the various interesting bits from the API.
+
+```ruby
 query.response # => <Struct::NhtsaResponse make="Jeep", model="Grand Cherokee", trim="Laredo/Rocky Mountain Edition", type="SUV", year="2008", size=nil, ... doors=4>
 ```
 
-In the result no match is found, the result will be `nil`, and `#valid?` will return `false`. 
+They query object also contains helper methods for error handling. For example, in the result no match is found, the result will be `nil`, and `#valid?` will return `false`. 
+
+```ruby
+query = NhtsaVin.get('SOME_BAD_VIN') # => <NhtsaVin::Query>
+query.valid? # => false
+query.error_code # => 11
+query.error # => "11- Incorrect Model Year, decoded data may not be accurate"
+```
+
 
 Vehicle Types
 ----
 
-For brievity, we're reducing the `Vehicle Type` response to an enumerated set of `["Car", "Truck", "Van", "SUV", "Minivan"]`. We're doing a rough parse of the type and body style to achieve this. It's probably not perfect. 
+For brevity, we're reducing the `Vehicle Type` response to an enumerated set of `["Car", "Truck", "Van", "SUV", "Minivan"]`. We're doing a rough parse of the type and body style to achieve this. It's probably not perfect. 
 
 
 ## License
