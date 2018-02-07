@@ -30,16 +30,23 @@ Or install it yourself as:
 Validation
 ----
 
-Prior to dispatching a call to the web service, you can optionally validate a given VIN first. 
+Prior to dispatching a call to the web service, you can optionally validate a given VIN first. Calling `#validate` returns an `NhtsaVin::Validation`.
 
 ```ruby
-validation = NhtsaVin.Validate.new('1J4BA5H11AL143811') # => <#NhtsaVin.Validate>
+validation = NhtsaVin.validate('1J4BA5H11AL143811') # => <#NhtsaVin.Validate>
 validation.valid? # => true
-validation.checksum # => 1
 
 validation = NhtsaVin.Validate.new('SOMEBADVIN') # => <#NhtsaVin.Validate>
 validation.valid? # => false
-validation.checksum # => nil
+validation.error # => 'Invalid VIN format'
+```
+
+Once validated, the validation also provides the components of a VIN, and additional information
+
+```ruby
+validation = NhtsaVin.validate('1J4BA5H11AL143811') # => <#NhtsaVin.Validate>
+validation.checksum # => '1'
+validation.plant # => 'L'
 ```
 
 Query
