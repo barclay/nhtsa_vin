@@ -36,7 +36,7 @@ Prior to dispatching a call to the web service, you can optionally validate a gi
 validation = NhtsaVin.validate('1J4BA5H11AL143811') # => <#NhtsaVin.Validate>
 validation.valid? # => true
 
-validation = NhtsaVin.Validate.new('SOMEBADVIN') # => <#NhtsaVin.Validate>
+validation = NhtsaVin.validate('SOMEBADVIN') # => <#NhtsaVin.Validate>
 validation.valid? # => false
 validation.error # => 'Invalid VIN format'
 ```
