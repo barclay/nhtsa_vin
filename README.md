@@ -25,16 +25,34 @@ Or install it yourself as:
 
     gem install nhsta_vin
 
-## Usage
+## Usage 
 
-Usage is fairly simple, there's an exposed `get` class method that you can pass in a VIN string to, and it will return you a NhtsaVin::Query.  
+Validation
+----
+
+Prior to dispatching a call to the web service, you can optionally validate a given VIN first. 
+
+```ruby
+validation = NhtsaVin.Validate.new('1J4BA5H11AL143811') # => <#NhtsaVin.Validate>
+validation.valid? # => true
+validation.checksum # => 1
+
+validation = NhtsaVin.Validate.new('SOMEBADVIN') # => <#NhtsaVin.Validate>
+validation.valid? # => false
+validation.checksum # => nil
+```
+
+Query
+----
+
+The main method for the gem is `NhtsaVin::get`, which takes a VIN string as the argument, and will return you a NhtsaVin::Query.  
 
 ```ruby
 query = NhtsaVin.get('1J4BA5H11AL143811') # => <NhtsaVin::Query>
 query.valid? # => true
 ```
 
-The actual data from the webservice is contained in the `response` method. This returns a struct containing the various interesting bits from the API.
+The actual data from the web service is contained in the `response` method. This returns a struct containing the various interesting bits from the API.
 
 ```ruby
 query.response # => <Struct::NhtsaResponse make="Jeep", model="Grand Cherokee", trim="Laredo/Rocky Mountain Edition", type="SUV", year="2008", size=nil, ... doors=4>
