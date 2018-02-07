@@ -10,8 +10,8 @@ module NhtsaVin
     query.get
     query
   end
-  
-  def validate(vin, options={})
+
+  def validate(vin)
     NhtsaVin::Validation.new(vin)
   end
 end
