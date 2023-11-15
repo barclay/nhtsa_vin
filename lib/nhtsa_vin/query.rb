@@ -6,7 +6,7 @@ module NhtsaVin
 
     NHTSA_URL = 'https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/'.freeze
 
-    attr_reader :vin, :url, :response, :data, :error, :error_code. :raw_response
+    attr_reader :vin, :url, :response, :data, :error, :error_code, :raw_response
 
     def initialize(vin, options={})
       @vin = vin
